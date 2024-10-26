@@ -20,13 +20,26 @@ with pd.ExcelWriter('employee_performance_report.xlsx', engine='xlsxwriter') as 
     worksheet = writer.sheets['Department Averages']
 
     # Add a bar chart for average scores
+workbook = writer.book
+    worksheet = writer.sheets['Department Averages']
+
+    # Add a bar chart for average scores
     chart = workbook.add_chart({'type': 'column'})
     chart.add_series({
-        'categories': ['Department Averages', 1, 0, len(dept_avg), 0],
-        'values': ['Department Averages', 1, 1, len(dept_avg), 1],
+        'categories': ['Department Averages', 1, 0, len(dept_avg), 0],  # Correct categories range
+        'values': ['Department Averages', 1, 1, len(dept_avg), 1],  # Correct values range
         'name': 'Average Score'
     })
+
+    # Set chart title and axis labels
     chart.set_title({'name': 'Average Score by Department'})
+    chart.set_x_axis({'name': 'Department'})
+    chart.set_y_axis({'name': 'Average Score'})
+
+    # Insert the chart into the worksheet
+    worksheet.insert_chart('D2', chart)
+
+print("Report generated in 'employee_performance_report.xlsx' with chart.")
     worksheet.insert_chart('D2', chart)
 
 print("Report generated in 'employee_performance_report.xlsx'")
