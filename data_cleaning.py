@@ -1,15 +1,16 @@
 import pandas as pd
 
-# Read data from Excel
-df = pd.read_excel('output.xlsx')
+# Read the employee performance data
+df = pd.read_excel('employee_performance.xlsx', engine='openpyxl')
 
-# Basic cleaning: Fill missing values
-df.fillna({'Score': 0}, inplace=True)
+# Fill missing values in 'Score' with the average score using a more compatible approach
+average_score = df['Score'].mean()
+df.loc[:, 'Score'] = df['Score'].fillna(average_score)
 
-# Remove duplicates
-df.drop_duplicates(inplace=True)
+# Remove duplicate entries
+df = df.drop_duplicates()
 
-# Save cleaned data
-df.to_excel('cleaned_data.xlsx', index=False)
+# Save the cleaned data to a new file
+df.to_excel('cleaned_employee_performance.xlsx', index=False)
 
-print("Data cleaned and saved to 'cleaned_data.xlsx'")
+print(f"Data cleaned and saved to 'cleaned_employee_performance.xlsx'")
